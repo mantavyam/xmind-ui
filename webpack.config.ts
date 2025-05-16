@@ -1,11 +1,23 @@
 import * as path from 'path'
-import { Configuration } from 'webpack'
+import { fileURLToPath } from 'url'
+import type { Configuration as WebpackConfig } from 'webpack'
+import type { Configuration as DevServerConfig } from 'webpack-dev-server'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+interface Configuration extends WebpackConfig {
+  devServer?: DevServerConfig
+}
 
 const commonConfig: Partial<Configuration> = {
   entry: './src/index.ts',
   resolve: {
-    extensions: ['.js', '.ts'],
+    extensions: ['.js', '.ts', '.tsx'],
   },
+  externals: {
+    // Add external dependencies if needed
+  }
 }
 
 const config: Configuration[] = [
@@ -15,35 +27,39 @@ const config: Configuration[] = [
     mode: 'development',
     devtool: 'inline-source-map',
     output: {
-      library: 'XMindEmbedViewer',
-      libraryTarget: 'umd',
-      libraryExport: 'XMindEmbedViewer',
+      library: {
+        name: 'XMindEmbedViewer',
+        type: 'umd',
+        export: 'default',
+      },
+      globalObject: 'this',
       path: path.join(__dirname, 'dist'),
       filename: 'xmind-embed-viewer.js'
     },
-    //
-    // https://github.com/webpack/webpack-dev-server/issues/2663
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     devServer: {
       port: 9000,
-      static: [
-        path.resolve('./public')
-      ],
+      static: {
+        directory: path.join(__dirname, 'public'),
+      },
       compress: true,
       hot: true,
-      https: false,
+      open: true,
+      historyApiFallback: true,
     },
-    plugins: [
-    ],
     module: {
       rules: [
         {
           test: /\.tsx?$/,
-          loader: 'ts-loader',
-          options: {
-            configFile : 'tsconfig.esm.json'
-          }
+          use: [
+            {
+              loader: 'ts-loader',
+              options: {
+                configFile: 'tsconfig.esm.json',
+                transpileOnly: true
+              }
+            }
+          ],
+          exclude: /node_modules/
         }
       ]
     },
@@ -54,22 +70,28 @@ const config: Configuration[] = [
     mode: 'production',
     devtool: 'source-map',
     output: {
-      library: 'XMindEmbedViewer',
-      libraryTarget: 'umd',
-      libraryExport: 'XMindEmbedViewer',
+      library: {
+        name: 'XMindEmbedViewer',
+        type: 'umd',
+        export: 'default',
+      },
+      globalObject: 'this',
       path: path.join(__dirname, 'dist/umd'),
       filename: 'xmind-embed-viewer.js'
     },
-    plugins: [
-    ],
     module: {
       rules: [
         {
           test: /\.tsx?$/,
-          loader: 'ts-loader',
-          options: {
-            configFile : 'tsconfig.umd.json'
-          }
+          use: [
+            {
+              loader: 'ts-loader',
+              options: {
+                configFile: 'tsconfig.umd.json'
+              }
+            }
+          ],
+          exclude: /node_modules/
         }
       ]
     },

@@ -37,8 +37,8 @@ export class XMindEmbedViewer {
       el,
       region = 'global',
       styles = {
-        'height': '350px',
-        'width': '750px',
+        'height': '920px',
+        'width': '1700px',
       },
       isPitchModeDisabled
     } = args

@@ -1,19 +1,19 @@
 {
   "name": "xmind-embed-viewer",
-  "version": "1.2.0",
-  "main": "dist/esm/index.js",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/umd/xmind-embed-viewer.js",
   "module": "dist/esm/index.js",
-  "browser": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
-  "typings": "dist/esm/index.d.ts",
   "files": [
-    "dist/**/*"
+    "dist"
   ],
   "scripts": {
-    "prepare": "npm run lint && npm run build",
-    "build": "webpack --config-name prod-umd && tsc -p tsconfig.esm.json",
-    "dev": "webpack serve --config-name dev",
-    "lint": "eslint src --ext .ts"
+    "start": "cross-env NODE_ENV=development webpack serve --config webpack.config.ts",
+    "build": "npm run build:umd && npm run build:esm",
+    "build:umd": "cross-env NODE_ENV=production webpack --config webpack.config.ts --env production",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "clean": "rimraf dist"
   },
   "maintainers": [
     {
@@ -38,16 +38,18 @@
   "homepage": "https://github.com/xmindltd/xmind-embed-viewer",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^20.4.4",
+    "@types/node": "^18.x",
     "@types/webpack": "^5.28.1",
-    "@typescript-eslint/eslint-plugin": "^6.1.0",
-    "@typescript-eslint/parser": "^6.1.0",
-    "eslint": "^8.45.0",
+    "cross-env": "^7.0.3",
+    "rimraf": "^5.0.1",
     "ts-loader": "^9.4.4",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
+  },
+  "dependencies": {
+    "xmind-embed-viewer": "^1.2.0"
   }
 }

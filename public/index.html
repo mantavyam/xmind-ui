@@ -2,28 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>XMind Embed Viewer (Development)</title>
+  <title>XMind Embed Viewer Demo</title>
 </head>
 <body>
-<div style="max-width: 1280px">
-  <p>The earliest known appearance of the phrase is from <i><a href="/wiki/The_Boston_Journal" title="The Boston Journal">The
-    Boston Journal</a></i>. In an article titled "Current Notes" in the February 9, 1885, edition, the phrase is mentioned
-    as a good practice <a href="/wiki/Sentence_(linguistics)" title="Sentence (linguistics)">sentence</a> for writing
-    students: "A favorite copy set by writing teachers for their pupils is the following, because it contains every letter
-    of the alphabet: 'A quick brown fox jumps over the lazy dog.'"<sup id="cite_ref-2" class="reference"><a
-      href="#cite_note-2">[2]</a></sup> Dozens of other newspapers published the phrase over the next few months, all
-    using the version of the sentence starting with "A" rather than "The".<sup id="cite_ref-:0_3-0" class="reference"><a
-      href="#cite_note-:0-3">[3]</a></sup> The earliest known use of the phrase starting with "The" is from the 1888 book
-    <i>Illustrative Shorthand</i> by Linda Bronson.<sup id="cite_ref-4" class="reference"><a
-      href="#cite_note-4">[4]</a></sup> The modern form (starting with "The") became more common despite the fact that it
-    is slightly longer than the original (starting with "A").
-  </p>
+<div style="max-width: 1700px">
+  <p>NOTESGLIDER - Mantavyam</p>
   <div id="mount">
 
   </div>
 </div>
+<div id="container"></div>
 </body>
-<script src="xmind-embed-viewer.js"></script>
+<script src="https://unpkg.com/xmind-embed-viewer/dist/umd/xmind-embed-viewer.js"></script>
 <script>
   const selectFileFromLocal = async (ext) => {
     const fileSelector = document.createElement('input')
@@ -53,13 +43,13 @@
       file: await res.arrayBuffer(),
       region: region === 'cn' ? 'cn' : 'global',
       styles: {
-        'height': '500px',
+        'height': '920px',
         'width': '100%'
       }
     })
 
     const eventLogsElement = document.createElement('div')
-    eventLogsElement.style.height = '500px'
+    eventLogsElement.style.height = '1080px'
     eventLogsElement.style.overflow = 'scroll'
 
     const log = (type, message) => eventLogsElement.innerHTML += `<div style="margin-top: 8px">[${type}] ${typeof message === 'object' && message ? JSON.stringify(message, null, 2) : message}</div>`
@@ -120,8 +110,8 @@
 
 
     const switchRegionButton = document.createElement('button')
-    switchRegionButton.textContent = region === 'cn' ? 'Switch to global' : '页面速度慢？切到国内源'
-    switchRegionButton.title = region === 'cn' ? '' : '具体如何初始化切换请查看 readme.md 或者 html 代码。'
+    switchRegionButton.textContent = region === 'cn' ? 'Switch to global' : 'Switch to Local'
+    switchRegionButton.title = region === 'cn' ? '' : 'Local Development readme.md Notesglider。'
     switchRegionButton.addEventListener('click', () => {
       const url = new URL(window.location.href)
       url.searchParams.set('region', region === 'cn' ? 'global' : 'cn')
